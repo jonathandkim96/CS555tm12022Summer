@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date, timedelta
 import pandas as pd
 import datetime
 from tabulate import tabulate
@@ -7,7 +7,7 @@ from pandas._libs.tslibs.offsets import relativedelta
 justLines = []
 dictIndi = {}
 dictFam = {}
-with open('./Sprint 1/Family.ged') as f:
+with open('./User Stories/Family.ged') as f:
     lines = f.read().splitlines()
     justLines.append(lines)
 lines = [[el] for el in lines]
@@ -78,9 +78,11 @@ for i in range(len(gedcom_out)):
 df_indi = pd.DataFrame(columns=[
                        'ID', 'Name', 'Gender', 'Birthday', 'Age', 'Alive', 'Death', 'Child', 'Spouce'])
 name, gender, birt, deat = "", "", "", ""
-alive = False
+alive = True
 for key, value in dictIndi.items():
     age = 0
+    deat_count = 0
+    # print(value)
     for i in range(len(value)):
         famc, fams = "", ""
         if(value[i][0] == 'NAME'):
@@ -93,18 +95,22 @@ for key, value in dictIndi.items():
         if(value[i][0] == 'DEAT'):
             deat = value[i][1]
             deat = datetime.datetime.strptime(deat, '%d %b %Y').date()
+            deat_count = deat_count + 1
         if(value[i][0] == 'FAMC'):
             famc = value[i][1]
         if(value[i][0] == 'FAMS'):
             fams = value[i][1]
+        if(deat_count < 1):
+            deat = 'NA'
     if (any('DEAT' in i for i in value)):
-        alive = True
+        alive = False
         age = relativedelta(deat, birt).years
     else:
         age = relativedelta(datetime.datetime.now(), birt).years
+        alive = True
 
-    df_indi = df_indi.append({'ID': key, 'Name': name, 'Gender': gender, 'Birthday': birt,
-                              'Alive': alive, 'Death': deat, 'Child': famc, 'Spouce': fams, 'Age': age}, ignore_index=True)
+    df_indi = pd.concat([df_indi, pd.DataFrame.from_records([{'ID': key, 'Name': name, 'Gender': gender, 'Birthday': birt,
+                              'Alive': alive, 'Death': deat, 'Child': famc, 'Spouce': fams, 'Age': age}])])
     df_indi = (df_indi.replace(r'^\s*$', 'NA', regex=True))
 
 flag = 0
@@ -157,83 +163,38 @@ for key, value in dictFam.items():
             div = value[i][1]
             div = datetime.datetime.strptime(div, '%d %b %Y').date()
 
-    df_fam = df_fam.append({'ID': key, 'Married': married, 'Divorced': div, 'Husband ID': husb_id,
-                            'Husband Name': husb_name, 'Wife ID': wife_id, 'Wife Name': wife_name, 'Children': child, }, ignore_index=True)
+    df_fam = pd.concat([df_fam, pd.DataFrame.from_records([{'ID': key, 'Married': married, 'Divorced': div, 'Husband ID': husb_id,
+                            'Husband Name': husb_name, 'Wife ID': wife_id, 'Wife Name': wife_name, 'Children': child, }])])
     df_fam = (df_fam.replace(r'^\s*$', 'NA', regex=True))
 
 print("Individuals")
 print(tabulate(df_indi, headers='keys', tablefmt='psql'))
 print("Families")
 print(tabulate(df_fam, headers='keys', tablefmt='psql'))
-print('\n\n')
-
-######################### Chaitanya Pawar's Code #########################
-# US01 : CP
-# Dates before current date
+print("\n")
 
 
-def US01():
-    error = []
-    todayDate = datetime.datetime.strptime(
-        datetime.datetime.today().strftime('%Y-%m-%d'), '%Y-%m-%d').date()
-    for i in range(len(df_indi)):
-        if(df_indi['Birthday'][i] != 'NA' and df_indi['Birthday'][i] > todayDate):
-            birthday = 'ERROR: INDIVIDUAL: US01: ' + \
-                str(i)+': '+df_indi.loc[i]['ID']+': ' + str(df_indi.loc[i]['Name']) + ' has a Birthday on ' + \
-                str(df_indi.loc[i]['Birthday']) + ' which occurs in the future'
-            error.append(birthday)
-        elif(df_indi['Death'][i] != 'NA' and df_indi['Death'][i] > todayDate):
-            deathdate = 'ERROR: INDIVIDUAL: US01: ' + \
-                str(i)+': '+df_indi.loc[i]['ID']+': ' + str(df_indi.loc[i]['Name']) + ' has a Deathday on ' + \
-                str(df_indi.loc[i]['Death']) + ' which occurs in the future'
-            error.append(deathdate)
-    for i in range(len(df_fam)):
-        if(df_fam['Married'][i] != 'NA' and df_fam['Married'][i] > todayDate):
-            married = 'ERROR: FAMILY: US01: '+str(i)+': '+df_fam.loc[i]['ID']+': '+'Marriage Day ' + str(
-                df_fam.loc[i]['Married']) + ' between ' + df_fam.loc[i]['Husband Name']+' (ID: ' + df_fam.loc[i]['Husband ID']+')'+' and ' + df_fam.loc[i]['Wife Name'] + ' (ID: '+df_fam.loc[i]['Wife ID'] + ')' + ' occurs in the future'
-            error.append(married)
-        elif(df_fam['Divorced'][i] != 'NA' and df_fam['Divorced'][i] > todayDate):
-            divorced = 'ERROR: FAMILY: US01: '+str(i)+': '+df_fam.loc[i]['ID']+': '+'Divorce Day ' + str(
-                df_fam.loc[i]['Divorced']) + ' between ' + df_fam.loc[i]['Husband Name']+' (ID: ' + df_fam.loc[i]['Husband ID']+')'+' and ' + df_fam.loc[i]['Wife Name'] + ' (ID: '+df_fam.loc[i]['Wife ID'] + ')' + ' occurs in the future'
-            error.append(divorced)
-    if((len(error)) > 0):
-        return (error)
+
+# US38 : Pair Programming - Jonathan Kim (JK) and Chaitanya Pawar (CP)
+# List upcoming birthdays
+
+
+def US38():
+    errors = []
+    dt = date.today() + timedelta(30)
+    for i, c in df_indi.iterrows():
+        bir = c['Birthday']
+        y = date.today().year
+        bir = bir.replace(year=y)
+        if(c['Death'] == 'NA'):
+            if(bir <= dt and bir >= date.today()):
+                errors.append("ERROR: "+"INDIVIDUAL: "+"US38: "+str(i)+': ' +
+                              c['ID']+": "+c['Name'] + " has upcoming Birthday on "+str(c['Birthday']))
+    if(errors):
+        return(errors)
     else:
-        error.append('ERROR: US01: No records found')
-        return(error)
+        return("No Errors")
 
 
-errorUS01 = US01()
-print(*errorUS01, sep="\n")
-
-# US02 : CP
-# Dates Birth before marriage
-
-
-def US02():
-    error = []
-    for i in range(len(df_indi)):
-        if(df_indi['Birthday'][i] != 'NA' and df_indi['Spouce'][i] != 'NA' and (df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) < (df_indi['Birthday'][i])):
-            if(df_indi['Gender'][i] == 'M'):
-                print_line = 'ERROR: INDIVIDUAL: US02: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a birthday on ' + str(
-                    df_indi.loc[i]['Birthday']) + ' which is after his marriage date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0])
-                error.append(print_line)
-            elif(df_indi['Gender'][i] == 'F'):
-                print_line = 'ERROR: INDIVIDUAL: US02: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a birthday on ' + str(
-                    df_indi.loc[i]['Birthday']) + ' which is after her marriage date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0])
-                error.append(print_line)
-            else:
-                print_line = 'ERROR: INDIVIDUAL: US02: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a birthday on ' + str(
-                    df_indi.loc[i]['Birthday']) + ' which is after their marriage date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) + '\n'
-                error.append(print_line)
-    if((len(error)) > 0):
-        return (error)
-    else:
-        error.append('ERROR: US01: No records found')
-        return(error)
-
-
-errorUS02 = US02()
-print(*errorUS02, sep="\n")
-
-######################### End of Chaitanya Pawar's Code #########################
+errorUS38 = US38()
+print(*errorUS38, sep="\n")
