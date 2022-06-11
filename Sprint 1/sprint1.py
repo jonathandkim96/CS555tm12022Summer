@@ -237,3 +237,62 @@ errorUS02 = US02()
 print(*errorUS02, sep="\n")
 
 ######################### End of Chaitanya Pawar's Code #########################
+
+######################### Jonathan Kim's Code #########################
+def US05():
+    error = []
+    for i in range(len(df_indi)):
+
+        if(df_indi['Death'][i] != 'NA' and df_indi['Spouce'][i] != 'NA' and (df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) > (df_indi['Death'][i])):
+
+            if(df_indi['Gender'][i] == 'M'):
+                print_line = 'ERROR: INDIVIDUAL: US05: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a marriage on ' + str(
+                    df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) + ' which is after his death date ' + str(df_indi['Death'][i])
+                error.append(print_line)
+            elif(df_indi['Gender'][i] == 'F'):
+                print_line = 'ERROR: INDIVIDUAL: US05: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a marriage on ' + str(
+                    df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) + ' which is after her death date ' + str(df_indi['Death'][i])
+                error.append(print_line)
+            else:
+                print_line = 'ERROR: INDIVIDUAL: US05: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a marriage on ' + str(
+                    df_indi.loc[i]['Death']) + ' which is after their death date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Death'].values[0]) + '\n'
+                error.append(print_line)
+    if((len(error)) > 0):
+        return (error)
+    else:
+        error.append('ERROR: US05: No records found')
+        return(error)
+
+
+errorUS05 = US05()
+print(*errorUS05, sep="\n")
+
+def US06():
+    error = []
+    for i in range(len(df_indi)):
+
+        if(df_indi['Death'][i] != 'NA' and df_indi['Spouce'][i] != 'NA' and (df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Divorced'].values[0]) > (df_indi['Death'][i])):
+
+            if(df_indi['Gender'][i] == 'M'):
+                print_line = 'ERROR: INDIVIDUAL: US06: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a divorce on ' + str(
+                    df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Divorced'].values[0]) + ' which is after his death date ' + str(df_indi['Death'][i])
+                error.append(print_line)
+            elif(df_indi['Gender'][i] == 'F'):
+                print_line = 'ERROR: INDIVIDUAL: US06: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a divorce on ' + str(
+                    df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Divorced'].values[0]) + ' which is after her death date ' + str(df_indi['Death'][i])
+                error.append(print_line)
+            else:
+                print_line = 'ERROR: INDIVIDUAL: US06: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a divorce on ' + str(
+                    df_indi.loc[i]['Death']) + ' which is after their death date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Death'].values[0]) + '\n'
+                error.append(print_line)
+    if((len(error)) > 0):
+        return (error)
+    else:
+        error.append('ERROR: US06: No records found')
+        return(error)
+
+
+errorUS06 = US06()
+print(*errorUS06, sep="\n")
+
+######################### End of Jonathan Kim's Code #########################
