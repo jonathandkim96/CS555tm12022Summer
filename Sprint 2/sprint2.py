@@ -208,9 +208,6 @@ print(*errorUS09, sep="\n")
 
 # US10 : CP
 # Marriage should be at least 14 years after birth of both spouses (parents must be at least 14 years old)
-######################### End of Chaitanya Pawar's Code #########################
-
-######################### Jonathan Kim's Code #########################
 
 def US10():
     count = 0
@@ -238,7 +235,9 @@ def US10():
 
 errorUS10 = US10()
 print(*errorUS10, sep="\n")
+######################### End of Chaitanya Pawar's Code #########################
 
+######################### Jonathan Kim's Code #########################
 def US15():
     error = []
     for i in range(len(df_fam)):
