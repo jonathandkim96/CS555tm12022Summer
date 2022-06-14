@@ -7,7 +7,7 @@ from pandas._libs.tslibs.offsets import relativedelta
 justLines = []
 dictIndi = {}
 dictFam = {}
-with open('Family.ged') as f:
+with open('./Sprint 2/Family.ged') as f:
     lines = f.read().splitlines()
     justLines.append(lines)
 lines = [[el] for el in lines]
@@ -168,96 +168,98 @@ print(tabulate(df_fam, headers='keys', tablefmt='psql'))
 print('\n\n')
 
 ######################### Chaitanya Pawar's Code #########################
-# US01 : CP
-# Dates before current date
+US01 : CP
+Dates before current date
 
 
-# def US01():
-#     error = []
-#     todayDate = datetime.datetime.strptime(
-#         datetime.datetime.today().strftime('%Y-%m-%d'), '%Y-%m-%d').date()
-#     for i in range(len(df_indi)):
-#         if(df_indi['Birthday'][i] != 'NA' and df_indi['Birthday'][i] > todayDate):
-#             birthday = 'ERROR: INDIVIDUAL: US01: ' + \
-#                 str(i)+': '+df_indi.loc[i]['ID']+': ' + str(df_indi.loc[i]['Name']) + ' has a Birthday on ' + \
-#                 str(df_indi.loc[i]['Birthday']) + ' which occurs in the future'
-#             error.append(birthday)
-#         elif(df_indi['Death'][i] != 'NA' and df_indi['Death'][i] > todayDate):
-#             deathdate = 'ERROR: INDIVIDUAL: US01: ' + \
-#                 str(i)+': '+df_indi.loc[i]['ID']+': ' + str(df_indi.loc[i]['Name']) + ' has a Deathday on ' + \
-#                 str(df_indi.loc[i]['Death']) + ' which occurs in the future'
-#             error.append(deathdate)
-#     for i in range(len(df_fam)):
-#         if(df_fam['Married'][i] != 'NA' and df_fam['Married'][i] > todayDate):
-#             married = 'ERROR: FAMILY: US01: '+str(i)+': '+df_fam.loc[i]['ID']+': '+'Marriage Day ' + str(
-#                 df_fam.loc[i]['Married']) + ' between ' + df_fam.loc[i]['Husband Name']+' (ID: ' + df_fam.loc[i]['Husband ID']+')'+' and ' + df_fam.loc[i]['Wife Name'] + ' (ID: '+df_fam.loc[i]['Wife ID'] + ')' + ' occurs in the future'
-#             error.append(married)
-#         elif(df_fam['Divorced'][i] != 'NA' and df_fam['Divorced'][i] > todayDate):
-#             divorced = 'ERROR: FAMILY: US01: '+str(i)+': '+df_fam.loc[i]['ID']+': '+'Divorce Day ' + str(
-#                 df_fam.loc[i]['Divorced']) + ' between ' + df_fam.loc[i]['Husband Name']+' (ID: ' + df_fam.loc[i]['Husband ID']+')'+' and ' + df_fam.loc[i]['Wife Name'] + ' (ID: '+df_fam.loc[i]['Wife ID'] + ')' + ' occurs in the future'
-#             error.append(divorced)
-#     if((len(error)) > 0):
-#         return (error)
-#     else:
-#         error.append('ERROR: US01: No records found')
-#         return(error)
-#
-#
-# errorUS01 = US01()
-# print(*errorUS01, sep="\n")
-
-# US02 : CP
-# Dates Birth before marriage
+def US01():
+    error = []
+    todayDate = datetime.datetime.strptime(
+        datetime.datetime.today().strftime('%Y-%m-%d'), '%Y-%m-%d').date()
+    for i in range(len(df_indi)):
+        if(df_indi['Birthday'][i] != 'NA' and df_indi['Birthday'][i] > todayDate):
+            birthday = 'ERROR: INDIVIDUAL: US01: ' + \
+                str(i)+': '+df_indi.loc[i]['ID']+': ' + str(df_indi.loc[i]['Name']) + ' has a Birthday on ' + \
+                str(df_indi.loc[i]['Birthday']) + ' which occurs in the future'
+            error.append(birthday)
+        elif(df_indi['Death'][i] != 'NA' and df_indi['Death'][i] > todayDate):
+            deathdate = 'ERROR: INDIVIDUAL: US01: ' + \
+                str(i)+': '+df_indi.loc[i]['ID']+': ' + str(df_indi.loc[i]['Name']) + ' has a Deathday on ' + \
+                str(df_indi.loc[i]['Death']) + ' which occurs in the future'
+            error.append(deathdate)
+    for i in range(len(df_fam)):
+        if(df_fam['Married'][i] != 'NA' and df_fam['Married'][i] > todayDate):
+            married = 'ERROR: FAMILY: US01: '+str(i)+': '+df_fam.loc[i]['ID']+': '+'Marriage Day ' + str(
+                df_fam.loc[i]['Married']) + ' between ' + df_fam.loc[i]['Husband Name']+' (ID: ' + df_fam.loc[i]['Husband ID']+')'+' and ' + df_fam.loc[i]['Wife Name'] + ' (ID: '+df_fam.loc[i]['Wife ID'] + ')' + ' occurs in the future'
+            error.append(married)
+        elif(df_fam['Divorced'][i] != 'NA' and df_fam['Divorced'][i] > todayDate):
+            divorced = 'ERROR: FAMILY: US01: '+str(i)+': '+df_fam.loc[i]['ID']+': '+'Divorce Day ' + str(
+                df_fam.loc[i]['Divorced']) + ' between ' + df_fam.loc[i]['Husband Name']+' (ID: ' + df_fam.loc[i]['Husband ID']+')'+' and ' + df_fam.loc[i]['Wife Name'] + ' (ID: '+df_fam.loc[i]['Wife ID'] + ')' + ' occurs in the future'
+            error.append(divorced)
+    if((len(error)) > 0):
+        return (error)
+    else:
+        error.append('ERROR: US01: No records found')
+        return(error)
 
 
-# def US02():
-#     error = []
-#     for i in range(len(df_indi)):
-#         if(df_indi['Birthday'][i] != 'NA' and df_indi['Spouce'][i] != 'NA' and (df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) < (df_indi['Birthday'][i])):
-#             if(df_indi['Gender'][i] == 'M'):
-#                 print_line = 'ERROR: INDIVIDUAL: US02: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a birthday on ' + str(
-#                     df_indi.loc[i]['Birthday']) + ' which is after his marriage date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0])
-#                 error.append(print_line)
-#             elif(df_indi['Gender'][i] == 'F'):
-#                 print_line = 'ERROR: INDIVIDUAL: US02: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a birthday on ' + str(
-#                     df_indi.loc[i]['Birthday']) + ' which is after her marriage date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0])
-#                 error.append(print_line)
-#             else:
-#                 print_line = 'ERROR: INDIVIDUAL: US02: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a birthday on ' + str(
-#                     df_indi.loc[i]['Birthday']) + ' which is after their marriage date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) + '\n'
-#                 error.append(print_line)
-#     if((len(error)) > 0):
-#         return (error)
-#     else:
-#         error.append('ERROR: US01: No records found')
-#         return(error)
-#
-#
-# errorUS02 = US02()
-# print(*errorUS02, sep="\n")
+errorUS01 = US01()
+print(*errorUS01, sep="\n")
 
-######################### End of Chaitanya Pawar's Code #########################
+US02 : CP
+Dates Birth before marriage
 
 
-# def US03():
-#     error = []
-#     for i in range(len(df_indi)):
-#         if df_indi['Death'][i] != 'NA':
-#             if df_indi['Birthday'][i] > df_indi['Death'][i]:
-#                 print_line = 'ERROR: INDIVIDUAL: US03: ' + str(i) + ': ' + df_indi.loc[i]['ID'] + ': ' + df_indi.loc[i]['Name'] + \
-#                              ' has a birthday on ' + str(df_indi.loc[i]['Birthday']) + ' which is after his death date ' + \
-#                              str(df_indi.loc[i]['Death'])
-#                 error.append(print_line)
-#
-#     if (len(error)) > 0:
-#         return error
-#     else:
-#         error.append('ERROR: US03: No records found')
-#         return error
-#
-#
-# errorUS03 = US03()
-# print(*errorUS03, sep="\n")
+def US02():
+    error = []
+    for i in range(len(df_indi)):
+        if(df_indi['Birthday'][i] != 'NA' and df_indi['Spouce'][i] != 'NA' and (df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) < (df_indi['Birthday'][i])):
+            if(df_indi['Gender'][i] == 'M'):
+                print_line = 'ERROR: INDIVIDUAL: US02: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a birthday on ' + str(
+                    df_indi.loc[i]['Birthday']) + ' which is after his marriage date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0])
+                error.append(print_line)
+            elif(df_indi['Gender'][i] == 'F'):
+                print_line = 'ERROR: INDIVIDUAL: US02: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a birthday on ' + str(
+                    df_indi.loc[i]['Birthday']) + ' which is after her marriage date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0])
+                error.append(print_line)
+            else:
+                print_line = 'ERROR: INDIVIDUAL: US02: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a birthday on ' + str(
+                    df_indi.loc[i]['Birthday']) + ' which is after their marriage date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) + '\n'
+                error.append(print_line)
+    if((len(error)) > 0):
+        return (error)
+    else:
+        error.append('ERROR: US01: No records found')
+        return(error)
+
+
+errorUS02 = US02()
+print(*errorUS02, sep="\n")
+
+######################## End of Chaitanya Pawar's Code #########################
+
+######################### Harshit Kargeti Code #########################
+
+
+def US03():
+    error = []
+    for i in range(len(df_indi)):
+        if df_indi['Death'][i] != 'NA':
+            if df_indi['Birthday'][i] > df_indi['Death'][i]:
+                print_line = 'ERROR: INDIVIDUAL: US03: ' + str(i) + ': ' + df_indi.loc[i]['ID'] + ': ' + df_indi.loc[i]['Name'] + \
+                             ' has a birthday on ' + str(df_indi.loc[i]['Birthday']) + ' which is after his death date ' + \
+                             str(df_indi.loc[i]['Death'])
+                error.append(print_line)
+
+    if (len(error)) > 0:
+        return error
+    else:
+        error.append('ERROR: US03: No records found')
+        return error
+
+
+errorUS03 = US03()
+print(*errorUS03, sep="\n")
 
 def US04():
     error = []
@@ -276,62 +278,63 @@ def US04():
 errorUS04 = US04()
 print(*errorUS04, sep="\n")
 
+######################### Harshit Kargeti Code #########################
 
 ######################### Jonathan Kim's Code #########################
-# def US05():
-#     error = []
-#     for i in range(len(df_indi)):
-#
-#         if(df_indi['Death'][i] != 'NA' and df_indi['Spouce'][i] != 'NA' and (df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) > (df_indi['Death'][i])):
-#
-#             if(df_indi['Gender'][i] == 'M'):
-#                 print_line = 'ERROR: INDIVIDUAL: US05: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a marriage on ' + str(
-#                     df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) + ' which is after his death date ' + str(df_indi['Death'][i])
-#                 error.append(print_line)
-#             elif(df_indi['Gender'][i] == 'F'):
-#                 print_line = 'ERROR: INDIVIDUAL: US05: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a marriage on ' + str(
-#                     df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) + ' which is after her death date ' + str(df_indi['Death'][i])
-#                 error.append(print_line)
-#             else:
-#                 print_line = 'ERROR: INDIVIDUAL: US05: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a marriage on ' + str(
-#                     df_indi.loc[i]['Death']) + ' which is after their death date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Death'].values[0]) + '\n'
-#                 error.append(print_line)
-#     if((len(error)) > 0):
-#         return (error)
-#     else:
-#         error.append('ERROR: US05: No records found')
-#         return(error)
-#
-#
-# errorUS05 = US05()
-# print(*errorUS05, sep="\n")
-#
-# def US06():
-#     error = []
-#     for i in range(len(df_indi)):
-#
-#         if(df_indi['Death'][i] != 'NA' and df_indi['Spouce'][i] != 'NA' and (df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Divorced'].values[0]) > (df_indi['Death'][i])):
-#
-#             if(df_indi['Gender'][i] == 'M'):
-#                 print_line = 'ERROR: INDIVIDUAL: US06: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a divorce on ' + str(
-#                     df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Divorced'].values[0]) + ' which is after his death date ' + str(df_indi['Death'][i])
-#                 error.append(print_line)
-#             elif(df_indi['Gender'][i] == 'F'):
-#                 print_line = 'ERROR: INDIVIDUAL: US06: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a divorce on ' + str(
-#                     df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Divorced'].values[0]) + ' which is after her death date ' + str(df_indi['Death'][i])
-#                 error.append(print_line)
-#             else:
-#                 print_line = 'ERROR: INDIVIDUAL: US06: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a divorce on ' + str(
-#                     df_indi.loc[i]['Death']) + ' which is after their death date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Death'].values[0]) + '\n'
-#                 error.append(print_line)
-#     if((len(error)) > 0):
-#         return (error)
-#     else:
-#         error.append('ERROR: US06: No records found')
-#         return(error)
-#
-#
-# errorUS06 = US06()
-# print(*errorUS06, sep="\n")
+def US05():
+    error = []
+    for i in range(len(df_indi)):
+
+        if(df_indi['Death'][i] != 'NA' and df_indi['Spouce'][i] != 'NA' and (df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) > (df_indi['Death'][i])):
+
+            if(df_indi['Gender'][i] == 'M'):
+                print_line = 'ERROR: INDIVIDUAL: US05: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a marriage on ' + str(
+                    df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) + ' which is after his death date ' + str(df_indi['Death'][i])
+                error.append(print_line)
+            elif(df_indi['Gender'][i] == 'F'):
+                print_line = 'ERROR: INDIVIDUAL: US05: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a marriage on ' + str(
+                    df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Married'].values[0]) + ' which is after her death date ' + str(df_indi['Death'][i])
+                error.append(print_line)
+            else:
+                print_line = 'ERROR: INDIVIDUAL: US05: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a marriage on ' + str(
+                    df_indi.loc[i]['Death']) + ' which is after their death date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Death'].values[0]) + '\n'
+                error.append(print_line)
+    if((len(error)) > 0):
+        return (error)
+    else:
+        error.append('ERROR: US05: No records found')
+        return(error)
+
+
+errorUS05 = US05()
+print(*errorUS05, sep="\n")
+
+def US06():
+    error = []
+    for i in range(len(df_indi)):
+
+        if(df_indi['Death'][i] != 'NA' and df_indi['Spouce'][i] != 'NA' and (df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Divorced'].values[0]) > (df_indi['Death'][i])):
+
+            if(df_indi['Gender'][i] == 'M'):
+                print_line = 'ERROR: INDIVIDUAL: US06: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a divorce on ' + str(
+                    df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Divorced'].values[0]) + ' which is after his death date ' + str(df_indi['Death'][i])
+                error.append(print_line)
+            elif(df_indi['Gender'][i] == 'F'):
+                print_line = 'ERROR: INDIVIDUAL: US06: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a divorce on ' + str(
+                    df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Divorced'].values[0]) + ' which is after her death date ' + str(df_indi['Death'][i])
+                error.append(print_line)
+            else:
+                print_line = 'ERROR: INDIVIDUAL: US06: '+str(i)+': '+df_indi.loc[i]['ID']+': '+df_indi.loc[i]['Name'] + ' has a divorce on ' + str(
+                    df_indi.loc[i]['Death']) + ' which is after their death date ' + str(df_fam[df_fam['ID'] == df_indi['Spouce'][i]]['Death'].values[0]) + '\n'
+                error.append(print_line)
+    if((len(error)) > 0):
+        return (error)
+    else:
+        error.append('ERROR: US06: No records found')
+        return(error)
+
+
+errorUS06 = US06()
+print(*errorUS06, sep="\n")
 
 ######################### End of Jonathan Kim's Code #########################
