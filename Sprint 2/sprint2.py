@@ -208,6 +208,9 @@ print(*errorUS09, sep="\n")
 
 # US10 : CP
 # Marriage should be at least 14 years after birth of both spouses (parents must be at least 14 years old)
+######################### End of Chaitanya Pawar's Code #########################
+
+######################### Jonathan Kim's Code #########################
 
 def US10():
     count = 0
@@ -235,3 +238,45 @@ def US10():
 
 errorUS10 = US10()
 print(*errorUS10, sep="\n")
+
+def US15():
+    error = []
+    for i in range(len(df_fam)):
+        if len(df_fam['Children'][i]) > 15:
+            print_line = 'ERROR: FAMILY: US15: THERE SHOULD BE FEWER THAN 15 SIBLINGS IN A FAMILY'
+            error.append(print_line)
+
+    if((len(error)) > 0):
+        return (error)
+    else:
+        error.append('ERROR: US15: No records found')
+        return(error)
+
+errorUS15 = US15()
+print(*errorUS15, sep="\n")
+
+def US16():
+    error = []
+    for i in range(len(df_fam)):
+
+        last_name = df_fam['Husband Name'][0].split('/',1)[1]
+        for j in range(len(df_fam['Children'][i])):
+            if ((df_indi[df_indi['ID']==df_fam['Children'][i][j]]['Gender']) == 'F').values[0] == True:
+                continue
+            else:
+                name_check = df_indi[df_indi['ID']==df_fam['Children'][i][j]]['Name'].values[0].split('/',1)[1]
+                if name_check != last_name:
+
+                    print_line = 'ERROR: FAMILY: US16: '+str(i)+': '+df_fam.loc[i]['ID']+ ': ALL MALE MEMBERS OF A FAMILY SHOULD HAVE THE SAME LAST NAME'
+                    error.append(print_line)
+
+    if((len(error)) > 0):
+        return (error)
+    else:
+        error.append('ERROR: US16: No records found')
+        return(error)
+
+errorUS16 = US16()
+print(*errorUS16, sep="\n")
+
+######################### End of Jonathan Kim's Code #########################
