@@ -3,14 +3,12 @@ import pandas as pd
 import datetime
 from tabulate import tabulate
 from pandas._libs.tslibs.offsets import relativedelta
-import itertools
-
 import logging
 
 justLines = []
 dictIndi = {}
 dictFam = {}
-with open('Family.ged') as f:
+with open('./Sprint 2/Family.ged') as f:
     lines = f.read().splitlines()
     justLines.append(lines)
 lines = [[el] for el in lines]
@@ -180,166 +178,137 @@ print("\n")
 # US09 : CP
 # Child should be born before death of mother and before 9 months after death of father
 
-# def US09():
-#     count = 0
-#     error = []
-#     for i in range(len(df_fam)):
-#         if(len(df_fam['Children'][i]) > 0):
-#             if(len(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values) > 0 and df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][8] != 'NA' and df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][6] != 'NA' and len(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][8]) > 0 and df_indi['Alive'].loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0] == False):
-#                 logging.debug('First IF is here')
-#                 if(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][2] == 'F' and df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][6] < df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][3]):
-#                     print_line = 'ERROR: FAMILY: US09: '+str(i)+': '+df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][0]+': '+'Mother\'s death date ' + df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][6].strftime(
-#                         "%Y-%m-%d") + ' before birthdate of child ' + df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][3].strftime("%Y-%m-%d")
-#                     count = count + 1
-#                     error.append(print_line)
-#                 elif(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][2] == 'M' and df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][6] < ((df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][3]) - datetime.timedelta(9*365/12))):
-#                     print_line = 'ERROR: FAMILY: US09: '+str(i)+': '+df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][0]+': '+'Father\'s death date ' + df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][6].strftime(
-#                         "%Y-%m-%d") + ' before birthdate of child ' + df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][3].strftime("%Y-%m-%d")
-#                     count = count + 1
-#                     error.append(print_line)
-#     if(count > 0):
-#         return (error)
-#     else:
-#         error.append('ERROR: US09: No records found')
-#         return(error)
-#
-#
-# errorUS09 = US09()
-# print(*errorUS09, sep="\n")
+def US09():
+    count = 0
+    error = []
+    for i in range(len(df_fam)):
+        if(len(df_fam['Children'][i]) > 0):
+            if(len(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values) > 0 and df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][8] != 'NA' and df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][6] != 'NA' and len(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][8]) > 0 and df_indi['Alive'].loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0] == False):
+                logging.debug('First IF is here')
+                if(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][2] == 'F' and df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][6] < df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][3]):
+                    print_line = 'ERROR: FAMILY: US09: '+str(i)+': '+df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][0]+': '+'Mother\'s death date ' + df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][6].strftime(
+                        "%Y-%m-%d") + ' before birthdate of child ' + df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][3].strftime("%Y-%m-%d")
+                    count = count + 1
+                    error.append(print_line)
+                elif(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][2] == 'M' and df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][6] < ((df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][3]) - datetime.timedelta(9*365/12))):
+                    print_line = 'ERROR: FAMILY: US09: '+str(i)+': '+df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][0]+': '+'Father\'s death date ' + df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][6].strftime(
+                        "%Y-%m-%d") + ' before birthdate of child ' + df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][3].strftime("%Y-%m-%d")
+                    count = count + 1
+                    error.append(print_line)
+    if(count > 0):
+        return (error)
+    else:
+        error.append('ERROR: US09: No records found')
+        return(error)
+
+
+errorUS09 = US09()
+print(*errorUS09, sep="\n")
 
 
 # US10 : CP
 # Marriage should be at least 14 years after birth of both spouses (parents must be at least 14 years old)
 
-# def US10():
-#     count = 0
-#     error = []
-#     no = []
-#     for i in range(len(df_fam)):
-#         if((df_fam['Married'][i]) != 'NA'):
-#             if((df_fam['Married'][i] - df_indi.loc[df_indi['ID'] == df_fam['Husband ID'][i]].values[0][3]) < datetime.timedelta(168*365/12)):
-#                 print_line = 'ERROR: FAMILY: US10: '+str(i)+': '+df_indi.loc[df_indi['ID'] == df_fam['Husband ID'][i]].values[0][0]+': '+'Father\'s birth date ' + df_indi.loc[df_indi['ID']
-#                                                                                                                                                                                == df_fam['Husband ID'][i]].values[0][3].strftime("%Y-%m-%d") + ' less than 14 years of marriage date ' + df_fam['Married'][i].strftime("%Y-%m-%d")
-#                 count += 1
-#                 error.append(print_line)
-#             elif((df_fam['Married'][i] - df_indi.loc[df_indi['ID'] == df_fam['Wife ID'][i]].values[0][3]) < datetime.timedelta(168*365/12)):
-#                 print_line = 'ERROR: FAMILY: US10: '+str(i)+': '+df_indi.loc[df_indi['ID'] == df_fam['Wife ID'][i]].values[0][0]+': '+'Mother\'s birth date ' + df_indi.loc[df_indi['ID']
-#                                                                                                                                                                             == df_fam['Wife ID'][i]].values[0][3].strftime("%Y-%m-%d") + ' less than 14 years of marriage date ' + df_fam['Married'][i].strftime("%Y-%m-%d")
-#                 count += 1
-#                 error.append(print_line)
-#
-#     if(count > 0):
-#         return (error)
-#     else:
-#         no.append('ERROR: US10: No records found')
-#         return(no)
-#
-#
-# errorUS10 = US10()
-# print(*errorUS10, sep="\n")
+def US10():
+    count = 0
+    error = []
+    no = []
+    for i in range(len(df_fam)):
+        if((df_fam['Married'][i]) != 'NA'):
+            if((df_fam['Married'][i] - df_indi.loc[df_indi['ID'] == df_fam['Husband ID'][i]].values[0][3]) < datetime.timedelta(168*365/12)):
+                print_line = 'ERROR: FAMILY: US10: '+str(i)+': '+df_indi.loc[df_indi['ID'] == df_fam['Husband ID'][i]].values[0][0]+': '+'Father\'s birth date ' + df_indi.loc[df_indi['ID']
+                                                                                                                                                                               == df_fam['Husband ID'][i]].values[0][3].strftime("%Y-%m-%d") + ' less than 14 years of marriage date ' + df_fam['Married'][i].strftime("%Y-%m-%d")
+                count += 1
+                error.append(print_line)
+            elif((df_fam['Married'][i] - df_indi.loc[df_indi['ID'] == df_fam['Wife ID'][i]].values[0][3]) < datetime.timedelta(168*365/12)):
+                print_line = 'ERROR: FAMILY: US10: '+str(i)+': '+df_indi.loc[df_indi['ID'] == df_fam['Wife ID'][i]].values[0][0]+': '+'Mother\'s birth date ' + df_indi.loc[df_indi['ID']
+                                                                                                                                                                            == df_fam['Wife ID'][i]].values[0][3].strftime("%Y-%m-%d") + ' less than 14 years of marriage date ' + df_fam['Married'][i].strftime("%Y-%m-%d")
+                count += 1
+                error.append(print_line)
+
+    if(count > 0):
+        return (error)
+    else:
+        no.append('ERROR: US10: No records found')
+        return(no)
+
+
+errorUS10 = US10()
+print(*errorUS10, sep="\n")
 ######################### End of Chaitanya Pawar's Code #########################
 
-######################### Start of Harshit KArgeti's Code #########################
-# def US14():
-#     error = []
-#     fam = {}
-#     birt = []
-#     for k in df_fam.values:
-#         birt = []
-#         if len(k[7]) > 1:
-#             for j in k[7]:
-#                 birt.append(df_indi.loc[df_indi['ID'] == j]['Birthday'].values[0])
-#
-#             fam[k[0]] = birt
-#
-#     for values in fam.items():
-#         result = values[1].count(values[1][0]) == len(values[1])
-#         if result:
-#             print_line = 'ERROR: FAMILY: US14:' + ': ' + values[0] + ': MORE THAN 5 SIBLINGS BORN AT THE SAME TIME'
-#             error.append(print_line)
-#
-#     if ((len(error)) > 0):
-#         return (error)
-#     else:
-#         error.append('ERROR: US14: No records found')
-#         return(error)
-#
-# errorUS14 = US14()
-# print(*errorUS14, sep="\n")
+#def US12():
+#    count = 0
+#    error = []
+#    for i in range(len(def_fam)):
+#        if(len(df_fam['Children'][i]) > 0):
+#            if(len(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values) > 0 and df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][8] != 'NA' and 
+#              df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][4] != 'NA' and len(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][8]) > 0 and df_indi['Alive'].loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0] == True):
+
+#                logging.debug('First IF is here')
+#                if(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][2] == 'F' and (df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][4] - df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][4]) > 60):
+#                    print_line = 'ERROR: FAMILY: US12: '+str(i)+': '+df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][0]+': '+'Mother\'s age ' + str(
+#                        df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][4]) + ' is more than 60 years older than her child ' + str(df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][4])
+#                    count = count + 1
+#                    error.append(print_line)
+#                elif(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][2] == 'M' and (df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][4] - df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][4]) > 80):
+#                    print_line = 'ERROR: FAMILY: US12: '+str(i)+': '+df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][0]+': '+'Father\'s age ' + str(
+#                        df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][4]) + ' is more than 60 years older than his child with age' + str(df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][4])
+#                    count = count + 1
+#                    error.append(print_line)
+#    if(count > 0):
+#        return (error)
+#    else:
+#        error.append('ERROR: US09: No records found')
+#        return(error)
+
+
+# errorUS12 = US12()
+# print(*errorUS12, sep="\n")
 
 
 
-def US13():
-    error = []
-    fam = {}
-    birt = []
-    for k in df_fam.values:
-        birt = []
-        if len(k[7]) > 1:
-            for j in k[7]:
-                birt.append(df_indi.loc[df_indi['ID'] == j]['Birthday'].values[0])
-
-                fam[k[0]] = birt
-
-
-    for values in fam.values():
-        for i in range(len(values)):
-            for j in range(i + 1, len(values)):
-                if values[i] - values[j] < datetime.timedelta(240) or values[i] - values[j] > datetime.timedelta(2):
-                    print_line = 'ERROR: FAMILY: US13:' + ': ' + str(values[0]) + ': Child is born within 8 months and more than 2 days of sibling'
-                    error.append(print_line)
-
-                    if ((len(error)) > 0):
-                        return (error)
-                    else:
-                        error.append('ERROR: US13: No records found')
-                        return(error)
-
-errorUS13 = US13()
-print(*errorUS13, sep="\n")
-
-######################### End of Harshit KArgeti's Code #########################
 
 
 ######################### Jonathan Kim's Code #########################
-# def US15():
-#     error = []
-#     for i in range(len(df_fam)):
-#         if len(df_fam['Children'][i]) > 15:
-#             print_line = 'ERROR: FAMILY: US15: THERE SHOULD BE FEWER THAN 15 SIBLINGS IN A FAMILY'
-#             error.append(print_line)
-#
-#     if((len(error)) > 0):
-#         return (error)
-#     else:
-#         error.append('ERROR: US15: No records found')
-#         return(error)
-#
-# errorUS15 = US15()
-# print(*errorUS15, sep="\n")
+def US15():
+    error = []
+    for i in range(len(df_fam)):
+        if len(df_fam['Children'][i]) > 15:
+            print_line = 'ERROR: FAMILY: US15: THERE SHOULD BE FEWER THAN 15 SIBLINGS IN A FAMILY'
+            error.append(print_line)
 
-# def US16():
-#     error = []
-#     for i in range(len(df_fam)):
-#
-#         last_name = df_fam['Husband Name'][0].split('/',1)[1]
-#         for j in range(len(df_fam['Children'][i])):
-#             if ((df_indi[df_indi['ID']==df_fam['Children'][i][j]]['Gender']) == 'F').values[0] == True:
-#                 continue
-#             else:
-#                 name_check = df_indi[df_indi['ID']==df_fam['Children'][i][j]]['Name'].values[0].split('/',1)[1]
-#                 if name_check != last_name:
-#
-#                     print_line = 'ERROR: FAMILY: US16: '+str(i)+': '+df_fam.loc[i]['ID']+ ': ALL MALE MEMBERS OF A FAMILY SHOULD HAVE THE SAME LAST NAME'
-#                     error.append(print_line)
-#
-#     if((len(error)) > 0):
-#         return (error)
-#     else:
-#         error.append('ERROR: US16: No records found')
-#         return(error)
-#
-# errorUS16 = US16()
-# print(*errorUS16, sep="\n")
+    if((len(error)) > 0):
+        return (error)
+    else:
+        error.append('ERROR: US15: No records found')
+        return(error)
+
+errorUS15 = US15()
+print(*errorUS15, sep="\n")
+
+def US16():
+    error = []
+    for i in range(len(df_fam)):
+
+        last_name = df_fam['Husband Name'][0].split('/',1)[1]
+        for j in range(len(df_fam['Children'][i])):
+            if ((df_indi[df_indi['ID']==df_fam['Children'][i][j]]['Gender']) == 'F').values[0] == True:
+                continue
+            else:
+                name_check = df_indi[df_indi['ID']==df_fam['Children'][i][j]]['Name'].values[0].split('/',1)[1]
+                if name_check != last_name:
+
+                    print_line = 'ERROR: FAMILY: US16: '+str(i)+': '+df_fam.loc[i]['ID']+ ': ALL MALE MEMBERS OF A FAMILY SHOULD HAVE THE SAME LAST NAME'
+                    error.append(print_line)
+
+    if((len(error)) > 0):
+        return (error)
+    else:
+        error.append('ERROR: US16: No records found')
+        return(error)
+
+errorUS16 = US16()
+print(*errorUS16, sep="\n")
 
 ######################### End of Jonathan Kim's Code #########################
