@@ -237,6 +237,39 @@ errorUS10 = US10()
 print(*errorUS10, sep="\n")
 ######################### End of Chaitanya Pawar's Code #########################
 
+#def US12():
+#    count = 0
+#    error = []
+#    for i in range(len(def_fam)):
+#        if(len(df_fam['Children'][i]) > 0):
+#            if(len(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values) > 0 and df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][8] != 'NA' and 
+#              df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][4] != 'NA' and len(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][8]) > 0 and df_indi['Alive'].loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0] == True):
+
+#                logging.debug('First IF is here')
+#                if(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][2] == 'F' and (df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][4] - df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][4]) > 60):
+#                    print_line = 'ERROR: FAMILY: US12: '+str(i)+': '+df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][0]+': '+'Mother\'s age ' + str(
+#                        df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][4]) + ' is more than 60 years older than her child ' + str(df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][4])
+#                    count = count + 1
+#                    error.append(print_line)
+#                elif(df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][2] == 'M' and (df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][4] - df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][4]) > 80):
+#                    print_line = 'ERROR: FAMILY: US12: '+str(i)+': '+df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][0]+': '+'Father\'s age ' + str(
+#                        df_indi.loc[df_indi['Spouce'] == df_fam['ID'][i]].values[0][4]) + ' is more than 60 years older than his child with age' + str(df_indi.loc[df_indi['Child'] == df_fam['ID'][i]].values[0][4])
+#                    count = count + 1
+#                    error.append(print_line)
+#    if(count > 0):
+#        return (error)
+#    else:
+#        error.append('ERROR: US09: No records found')
+#        return(error)
+
+
+# errorUS12 = US12()
+# print(*errorUS12, sep="\n")
+
+
+
+
+
 ######################### Jonathan Kim's Code #########################
 def US15():
     error = []
