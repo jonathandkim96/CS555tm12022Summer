@@ -7,7 +7,7 @@ from pandas._libs.tslibs.offsets import relativedelta
 justLines = []
 dictIndi = {}
 dictFam = {}
-with open('./Sprint 1/Family.ged') as f:
+with open('./Sprint 2/Family.ged') as f:
     lines = f.read().splitlines()
     justLines.append(lines)
 lines = [[el] for el in lines]
@@ -168,8 +168,8 @@ print(tabulate(df_fam, headers='keys', tablefmt='psql'))
 print('\n\n')
 
 ######################### Chaitanya Pawar's Code #########################
-# US01 : CP
-# Dates before current date
+US01 : CP
+Dates before current date
 
 
 def US01():
@@ -206,8 +206,8 @@ def US01():
 errorUS01 = US01()
 print(*errorUS01, sep="\n")
 
-# US02 : CP
-# Dates Birth before marriage
+US02 : CP
+Dates Birth before marriage
 
 
 def US02():
@@ -236,7 +236,49 @@ def US02():
 errorUS02 = US02()
 print(*errorUS02, sep="\n")
 
-######################### End of Chaitanya Pawar's Code #########################
+######################## End of Chaitanya Pawar's Code #########################
+
+######################### Harshit Kargeti Code #########################
+
+
+def US03():
+    error = []
+    for i in range(len(df_indi)):
+        if df_indi['Death'][i] != 'NA':
+            if df_indi['Birthday'][i] > df_indi['Death'][i]:
+                print_line = 'ERROR: INDIVIDUAL: US03: ' + str(i) + ': ' + df_indi.loc[i]['ID'] + ': ' + df_indi.loc[i]['Name'] + \
+                             ' has a birthday on ' + str(df_indi.loc[i]['Birthday']) + ' which is after his death date ' + \
+                             str(df_indi.loc[i]['Death'])
+                error.append(print_line)
+
+    if (len(error)) > 0:
+        return error
+    else:
+        error.append('ERROR: US03: No records found')
+        return error
+
+
+errorUS03 = US03()
+print(*errorUS03, sep="\n")
+
+def US04():
+    error = []
+    for i in df_fam.values:
+        if i[2] != 'NA':
+            if i[1] > i[2]:
+                print_line = 'ERROR: FAMILY: US04: ' + i[0] + ': ' + ' Was divorced on ' + str(i[2]) + ' which is before their marriage ' + str(i[1])
+                error.append(print_line)
+
+    if len(error) > 0:
+        return error
+    else:
+        error.append('ERROR: US04: No records found')
+        return error
+
+errorUS04 = US04()
+print(*errorUS04, sep="\n")
+
+######################### Harshit Kargeti Code #########################
 
 ######################### Jonathan Kim's Code #########################
 def US05():
