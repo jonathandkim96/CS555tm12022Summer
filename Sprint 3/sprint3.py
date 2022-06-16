@@ -227,3 +227,47 @@ us18Error = us18()
 print(*us18Error, sep="\n")
 
 ######################### End of Chaitanya Pawar's Code #########################
+
+######################### Jonathan Kim's Code #########################
+
+def US23():
+
+    error = []
+    for i in range(len(df_indi)):
+        name = df_indi['Name'][i]
+        birthday = df_indi['Birthday'][i]
+        for j in range(len(df_indi)):
+            if j == i:
+                continue
+            name_search = df_indi['Name'][j]
+            birthday_search = df_indi['Birthday'][j]
+            if name_search == name and birthday_search == birthday:
+                error.append("ERROR: " + "INDIVIDUAL: " + "US23: " + str(i) + ": " + " individual "+ df_indi['ID'][i] + " and individual "+ df_indi['ID'][j] + " have the same name and birthday.")
+
+
+    return error
+
+US23Error = US23()
+print(*US23Error, sep="\n")
+
+def US24():
+
+    error = []
+    for i in range(len(df_fam)):
+        husband = df_fam['Husband Name'][i]
+        wife = df_fam['Wife Name'][i]
+        marriage_date = df_fam['Married'][i]
+        for j in range(len(df_fam)):
+            if j == i:
+                continue
+            husband_search = df_fam['Husband Name'][j]
+            wife_search = df_fam['Wife Name'][j]
+            marriage_date_search = df_fam['Married'][j]
+            if husband_search == husband and wife_search == wife and marriage_date_search == marriage_date:
+                error.append("ERROR: " + "FAMILY: " + "US24: " + str(i) + ": " + " Fndividual "+ df_fam['ID'][i] + " and family "+ df_fam['ID'][j] + " have the same husband and wife name and marriage date.")
+
+    return error
+US24Error = US24()
+print(*US24Error, sep="\n")
+
+######################### End of Jonathan Kim's Code #########################
