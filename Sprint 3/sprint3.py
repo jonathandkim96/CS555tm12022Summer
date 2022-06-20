@@ -8,7 +8,7 @@ import logging
 justLines = []
 dictIndi = {}
 dictFam = {}
-with open('./Sprint 3/Family.ged') as f:
+with open('Family.ged') as f:
     lines = f.read().splitlines()
     justLines.append(lines)
 lines = [[el] for el in lines]

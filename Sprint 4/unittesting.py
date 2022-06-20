@@ -5,8 +5,9 @@ import sprint4
 class functionTest(unittest.TestCase):
     ######################### Chaitanya Pawar's Code #########################
     def test_userstory25(self):
-        result25 = ['ERROR: INDIVIDUAL: US25: No unique first name in family for name: Robb /Stark/', 'ERROR: INDIVIDUAL: US25: No unique first name in family for name: Jon /Barathaon/',
-                    'ERROR: INDIVIDUAL: US25: No unique first name in family for name: Cate /Laniaster/']
+        result25 = ['ERROR: INDIVIDUAL: US25: No unique first name in family for name: Robert /Robinson/',
+                    'ERROR: INDIVIDUAL: US25: No unique first name in family for name: Jon /Barathaon/',
+                    'ERROR: INDIVIDUAL: US25: No unique first name in family for name: Cate /Tim/']
         self.assertEqual(sprint4.US25(), result25)
 
     def test_userstory26(self):
