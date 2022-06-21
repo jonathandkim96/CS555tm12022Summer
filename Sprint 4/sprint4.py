@@ -272,3 +272,56 @@ us26Error = US26()
 print(*us26Error, sep="\n")
 
 ######################### End of Chaitanya Pawar's Code #########################
+
+######################### Jonathan Kim's Code #########################
+
+def US31():
+    output = []
+    for i in range(len(df_indi)):
+        been_married = False
+        name = df_indi['Name'][i]
+        #breakpoint()
+        if df_indi['Gender'][i] == 'F':
+            for j in range(len(df_fam)):
+                if name == df_fam['Wife Name'][j]:
+                    been_married = True
+        elif df_indi['Gender'][i] == 'M':
+            for j in range(len(df_fam)):
+                if name == df_fam['Husband Name'][j]:
+                    been_married = True
+
+        if been_married == False and df_indi['Age'][i] > 30:
+            output.append(name)
+    if ((len(output))> 0):
+        output.insert(0, 'US31: List of individuals above the age of 30 who have never been married: ')
+    else:
+        output.append('US31: There are no individuals above the age of 30 who have never been married.')
+    return output
+us31Error = US31()
+print(*us31Error, sep="\n")
+
+def US32():
+    output = []
+    bday_dict = {}
+    for i in range(len(df_indi)):
+        birthday = df_indi['Birthday'][i]
+        if birthday not in bday_dict:
+            bday_dict[birthday] = [('ID: '+df_indi['ID'][i]+', Name: '+df_indi['Name'][i])]
+        elif birthday in bday_dict:
+            bday_dict[birthday].append(('ID: '+df_indi['ID'][i]+', Name: '+df_indi['Name'][i]))
+    for key in bday_dict:
+        if len(bday_dict[key]) > 1:
+            output.append('The birthday: '+str(key)+' is shared by these individuals: '+str(bday_dict[key]))
+        else:
+            continue
+    #breakpoint()
+    if ((len(output)) > 0):
+        output.insert(0, 'US32: List of multiple birthdays: ')
+    else:
+        output.append('US32: There are no shared birthdays.')
+    return output
+
+us32Error = US32()
+print(*us32Error, sep = "\n")
+
+######################### End of Jonathan Kim's Code #########################
